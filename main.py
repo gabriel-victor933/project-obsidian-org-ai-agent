@@ -2,7 +2,8 @@ import os
 import warnings
 import argparse
 
-from config import SYSTEM_PROMPT
+from config import SYSTEM_PROMPT, MAX_AGENT_ITERATIONS
+from functions import schema_write_whole_file, schema_list_files, schema_get_content
 
 from dotenv import load_dotenv
 from litellm import completion
@@ -12,27 +13,9 @@ load_dotenv()
 messages=[{ "role":"system", "content": SYSTEM_PROMPT}]
 
 tools = [
-            {
-                "type": "function",
-                "function": {
-                    "name": "get_file_content",
-                    "description": "Obtem o conteudo de um arquivo em formato de texto",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "workdir": {
-                                "type": "string",
-                                "description": "Pasta base onde todos os arquivos estão armazenados",
-                            },
-                            "path": {
-                                "type": "string", 
-                                "description": "path do arquivo dentro de workdir"
-                            },
-                        },
-                        "required": ["workdir","path"],
-                    },
-                },
-            },
+            schema_list_files,
+            schema_get_content,
+            schema_write_whole_file
         ]
 
 
@@ -46,15 +29,13 @@ def main(user_message, verbose=False):
         tools=tools
     )
 
-    print(response)
-
     response_message = response.choices[0].message
-
-    print("\n\n",response_message,"\n\n")
-
     tool_calls = response_message.tool_calls
 
-    print("\n\n",tool_calls,"\n\n")
+    if tool_calls:
+        print("\nTool Choice:\n", tool_calls)
+    else:
+        print(response_message)
 
 if __name__ == "__main__":
 
