@@ -33,11 +33,11 @@ schema_write_whole_file = {
                     "description": "path do arquivo a partir do working_dir"
                 },
                 "content": {
-                    "type": "int", 
+                    "type": "string", 
                     "description": "Conteudo que seja escrito no arquivo"
                 },
             },
-            "required": ["workdir","file_path","content"],
+            "required": ["working_dir","file_path","content"],
         },
     },
 }

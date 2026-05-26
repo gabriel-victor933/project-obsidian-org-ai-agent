@@ -35,7 +35,7 @@ def main(user_message, verbose=False):
     if tool_calls:
         print("\nTool Choice:\n", tool_calls)
     else:
-        print(response_message)
+        print(response_message.content)
 
 if __name__ == "__main__":
 

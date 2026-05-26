@@ -39,11 +39,11 @@ schema_get_file_content = {
                     "description": "path do arquivo a partir do working_dir"
                 },
                 "start_byte": {
-                    "type": "int", 
+                    "type": "integer", 
                     "description": "Byte a partir do qual a leitura do arquivo é iniciada"
                 },
             },
-            "required": ["workdir","file_path"],
+            "required": ["working_dir","file_path"],
         },
     },
 }
