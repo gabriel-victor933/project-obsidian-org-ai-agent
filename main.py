@@ -3,7 +3,7 @@ import warnings
 import argparse
 
 from config import SYSTEM_PROMPT, MAX_AGENT_ITERATIONS
-from functions import schema_write_whole_file, schema_list_files, schema_get_content
+from functions import schema_write_whole_file, schema_list_files, schema_get_file_content
 
 from dotenv import load_dotenv
 from litellm import completion
@@ -14,7 +14,7 @@ messages=[{ "role":"system", "content": SYSTEM_PROMPT}]
 
 tools = [
             schema_list_files,
-            schema_get_content,
+            schema_get_file_content,
             schema_write_whole_file
         ]
 

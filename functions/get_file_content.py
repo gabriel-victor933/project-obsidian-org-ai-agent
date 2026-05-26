@@ -22,7 +22,7 @@ def get_file_content(working_dir: str, file_path: str, start_byte: int = None):
         return full_text
     
 
-schema_get_content = {
+schema_get_file_content = {
     "type": "function",
     "function": {
         "name": "get_file_content",
