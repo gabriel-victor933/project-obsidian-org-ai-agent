@@ -25,3 +25,9 @@ Dessa forma eu agilizo o problema de criar conexões manualmente porque demora d
 - Function tool executor.
 - Agents tools - functions that the agent nows and can ask to execute. 
 - Funcao para chamar a LLM
+
+
+
+
+## Melhorias e aprofundamento
+- Incluir multiturn conversation. Eu pergunto, o agente pergunta de volta e eu respondo então o agente responde também.
