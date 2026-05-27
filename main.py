@@ -1,8 +1,10 @@
 import os
 import warnings
 import argparse
+import json
 
 from config import SYSTEM_PROMPT, MAX_AGENT_ITERATIONS
+from tool_executer import tool_executer
 from functions import schema_write_whole_file, schema_list_files, schema_get_file_content
 
 from dotenv import load_dotenv
@@ -18,7 +20,6 @@ tools = [
             schema_write_whole_file
         ]
 
-
 def main(user_message, verbose=False):
 
     messages.append({'role': 'user', 'content': user_message})
@@ -32,10 +33,37 @@ def main(user_message, verbose=False):
     response_message = response.choices[0].message
     tool_calls = response_message.tool_calls
 
-    if tool_calls:
-        print("\nTool Choice:\n", tool_calls)
-    else:
-        print(response_message.content)
+
+    for _ in range(1):
+        if tool_calls:
+            if response_message.content is not None:
+                print(response_message.content)
+
+            for tool_call in tool_calls:
+            
+                function_name = tool_call.function.name
+                arguments = json.loads(tool_call.function.arguments)
+                
+                print(f"- Running tool {function_name}...")
+                result = tool_executer(function_name, arguments)
+
+                messages.append({
+                        "tool_call_id": tool_call.id,
+                        "role": "tool",
+                        "name": function_name,
+                        "content": result,
+                })
+
+                response = completion(
+                    model='gemini/gemini-3.5-flash',
+                    messages=messages,
+                    tools=tools
+                )
+                
+                print(response.choices[0].message.content)
+        else:
+            print(response_message.content)
+            break
 
 if __name__ == "__main__":
 
