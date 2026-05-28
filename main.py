@@ -5,7 +5,7 @@ import json
 
 from config import SYSTEM_PROMPT, MAX_AGENT_ITERATIONS
 from tool_executer import tool_executer
-from functions import schema_write_whole_file, schema_list_files, schema_get_file_content
+from functions import schema_write_whole_file, schema_list_files, schema_get_file_content, schema_rename_file, schema_create_dir, schema_move_file
 
 from dotenv import load_dotenv
 from litellm import completion
@@ -36,6 +36,10 @@ tools = [
             schema_list_files,
             schema_get_file_content,
             schema_write_whole_file,
+            schema_rename_file, 
+            schema_create_dir, 
+            schema_move_file,
+            ##
             schema_end_session
         ]
 

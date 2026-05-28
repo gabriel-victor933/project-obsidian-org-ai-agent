@@ -20,7 +20,7 @@ schema_write_whole_file = {
     "type": "function",
     "function": {
         "name": "write_whole_file",
-        "description": "Escreve o conteudo do parametro content no arquivo. Funcao substitui qualquer coisa que ja existir no arquivo",
+        "description": "Escreve o conteudo do parametro content no arquivo. Caso arquivo já exista funcao substitui qualquer coisa que ja existir no arquivo, se não função um novo arquivo",
         "parameters": {
             "type": "object",
             "properties": {
