@@ -10,6 +10,9 @@ wheels/
 .venv
 .env
 
+# Logs
+logs/
+
 ## Obsidian Files
 obsidian/
 TODO_LIST.md

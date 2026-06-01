@@ -2,13 +2,19 @@ import os
 import warnings
 import argparse
 import json
+import logging
+from datetime import datetime 
+import random
+
 
 from config import SYSTEM_PROMPT, MAX_AGENT_ITERATIONS
 from tool_executer import tool_executer
 from functions import schema_write_whole_file, schema_list_files, schema_get_file_content, schema_rename_file, schema_create_dir, schema_move_file
 
 from dotenv import load_dotenv
-from litellm import completion, Router
+import litellm
+from litellm import Router
+from litellm.integrations.custom_logger import CustomLogger
 
 load_dotenv()
 
@@ -71,6 +77,43 @@ model_list = [
 ]
 
 fallbacks = [{"gemini-3.5-flash": ["gemini-3.1-flash-lite", "gemini-2.5-flash"]}]
+
+logger = logging.getLogger("obsidian_agent")
+logger.setLevel(logging.INFO)
+
+timestamp = int(datetime.utcnow().timestamp())
+rand_diff = random.randint(1, 1000)
+log_file_name = f"logs/agent-{timestamp}-{rand_diff}.txt"
+handler = logging.FileHandler(log_file_name)
+handler.setFormatter(logging.Formatter("%(asctime)s [%(levelname)s] %(message)s"))
+
+logger.addHandler(handler)
+logger.propagate = False 
+
+class MyCustomHandler(CustomLogger):
+
+    def __init__(self, logger=None):
+        self.logger = logger
+
+    def log_pre_api_call(self, model, messages, kwargs):
+        self.logger.info(f"Pre-API Call: model={model}")
+
+    def log_post_api_call(self, kwargs, response_obj, start_time, end_time):
+        self.logger.info(f"Post-API Call: model={kwargs.get('model')}")
+
+    def log_success_event(self, kwargs, response_obj, start_time, end_time):
+        usage = getattr(response_obj, "usage", None)
+        model = kwargs.get("model")
+        self.logger.info(f"Success: model={model} | usage={usage} | duração={end_time - start_time}")
+
+    def log_failure_event(self, kwargs, response_obj, start_time, end_time):
+        exception = kwargs.get("exception")
+        self.logger.error(f"Failure: model={kwargs.get('model')} | erro={exception}")
+
+    
+## Custom callback para print e/ou salvar logs
+customHandler = MyCustomHandler(logger)
+litellm.callbacks = [customHandler]
 
 def main(user_message, verbose=False):
     # Usando router para poder fazer fallbacks entre modelos
