@@ -8,7 +8,7 @@ from tool_executer import tool_executer
 from functions import schema_write_whole_file, schema_list_files, schema_get_file_content, schema_rename_file, schema_create_dir, schema_move_file
 
 from dotenv import load_dotenv
-from litellm import completion
+from litellm import completion, Router
 
 load_dotenv()
 
@@ -43,14 +43,50 @@ tools = [
             schema_end_session
         ]
 
+model_list = [
+    {
+        'model_name': 'gemini-3.5-flash',
+        'litellm_params': {
+            'model': 'gemini/gemini-3.5-flash',
+            'api_key': os.getenv('GEMINI_API_KEY'),
+            'order': 1
+        }
+    },
+    {
+        'model_name': 'gemini-3.1-flash-lite',
+        'litellm_params': {
+            'model': 'gemini/gemini-3.1-flash-lite',
+            'api_key': os.getenv('GEMINI_API_KEY'),
+            'order': 2
+        }
+    },
+    {
+        'model_name': 'gemini-2.5-flash',
+        'litellm_params': {
+            'model': 'gemini/gemini-2.5-flash',
+            'api_key': os.getenv('GEMINI_API_KEY'),
+            'order': 3
+        }
+    },
+]
+
+fallbacks = [{"gemini-3.5-flash": ["gemini-3.1-flash-lite", "gemini-2.5-flash"]}]
+
 def main(user_message, verbose=False):
+    # Usando router para poder fazer fallbacks entre modelos
+    router = Router(
+        model_list=model_list,
+        fallbacks=fallbacks, 
+        num_retries=3,
+        retry_after=10
+    )
 
     messages.append({'role': 'user', 'content': user_message})
 
     for _ in range(MAX_AGENT_ITERATIONS):
 
-        response = completion(
-            model='gemini/gemini-3.5-flash',
+        response = router.completion(
+            model='gemini-3.5-flash',
             messages=messages,
             tools=tools
         )

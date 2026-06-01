@@ -46,5 +46,4 @@ schema_list_files = {
 }
 
 if __name__ == "__main__":
-    print(list_files('obsidian','teste'))
-    print(list_files('obsidian','teste',False))
+    print(list_files('obsidian'))

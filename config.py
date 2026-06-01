@@ -32,8 +32,9 @@ Seus objetivo como organizador de conhecimento são:
         > Este conteúdo pode conter erros ou informações desatualizadas.
     "
 
-IMPORTANTE: nunca peça confirmação. Apenas execute.
+IMPORTANTE: nunca peça confirmação, apenas execute ou responda o que foi pedido.
 IMPORTANTE: EXECUTE a tool end_session para finalizar a conversa e mandar a resposta final
+IMPORTANTE: Sempre considere que o working_dir é a pasta 'obsidian'.
 """
 
 MAX_AGENT_ITERATIONS = 50
