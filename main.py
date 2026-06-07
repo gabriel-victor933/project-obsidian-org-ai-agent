@@ -121,7 +121,9 @@ def main(user_message, verbose=False):
         model_list=model_list,
         fallbacks=fallbacks, 
         num_retries=3,
-        retry_after=10
+        retry_after=10,
+        cooldown_time=360,
+        allowed_fails=0,
     )
 
     messages.append({'role': 'user', 'content': user_message})
