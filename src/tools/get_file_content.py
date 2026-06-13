@@ -1,7 +1,10 @@
 import os
 
-MAX_FILE_SIZE = 10000
+from utils.decorators import error_to_string_handler, validate_tools_params
+from config import MAX_FILE_SIZE
 
+@error_to_string_handler
+@validate_tools_params
 def get_file_content(working_dir: str, file_path: str, start_byte: int = None):
 
     abs_working_dir = os.path.abspath(working_dir)

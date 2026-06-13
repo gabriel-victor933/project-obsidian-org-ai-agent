@@ -1,4 +1,4 @@
-from functions import get_file_content, write_whole_file, list_files, rename_file, create_dir, move_file
+from tools import get_file_content, write_whole_file, list_files, rename_file, create_dir, move_file
 
 available_tools = {
     'list_files': list_files,

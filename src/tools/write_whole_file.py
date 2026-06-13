@@ -1,6 +1,9 @@
 import os
 
+from utils.decorators import error_to_string_handler, validate_tools_params
 
+@error_to_string_handler
+@validate_tools_params
 def write_whole_file(working_dir: str, file_path: str, content: str):
 
     abs_working_dir = os.path.abspath(working_dir)

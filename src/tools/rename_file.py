@@ -1,6 +1,9 @@
 import os
 
+from utils.decorators import error_to_string_handler, validate_tools_params
 
+@error_to_string_handler
+@validate_tools_params
 def rename_file(working_dir: str, file_path: str, new_name: str):
 
     abs_working_dir = os.path.abspath(working_dir)

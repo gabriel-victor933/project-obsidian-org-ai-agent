@@ -1,6 +1,8 @@
 import os
+from utils.decorators import error_to_string_handler, validate_tools_params
 
-
+@error_to_string_handler
+@validate_tools_params
 def create_dir(working_dir: str, dir_path: str):
 
     abs_working_dir = os.path.abspath(working_dir)

@@ -38,3 +38,5 @@ IMPORTANTE: Sempre considere que o working_dir é a pasta 'obsidian'.
 """
 
 MAX_AGENT_ITERATIONS = 50
+
+MAX_FILE_SIZE = 1000

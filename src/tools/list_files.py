@@ -1,10 +1,15 @@
 import os
 import glob
 
+from utils.decorators import error_to_string_handler, validate_tools_params
+
+@error_to_string_handler
+@validate_tools_params
 def list_files(working_dir: str, subpath: str = ".", recursive: bool = "true") -> str:
     """
     Lista arquivos dentro de um diretorio e subdiretorio. A listagem pode ser recursiva ou não.
     """
+    
     is_recursive = recursive == "true"
     abs_working_dir = os.path.abspath(working_dir)
 

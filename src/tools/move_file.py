@@ -1,6 +1,9 @@
 import os
 import shutil
+from utils.decorators import error_to_string_handler, validate_tools_params
 
+@error_to_string_handler
+@validate_tools_params
 def move_file(working_dir: str, file_path: str, destination_path: str):
 
     abs_working_dir = os.path.abspath(working_dir)
